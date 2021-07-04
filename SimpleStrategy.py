@@ -1,7 +1,6 @@
 import backtrader as bt
-from model_LSTM import model_LSTM
 from GetData import TikerData
-from PreProcessing import PreProcessing
+
 
 # Create a Stratey
 class SimpleStrategy(bt.Strategy):

@@ -1,19 +1,13 @@
 # import packages
-from copy import copy
 from datetime import date  # date and time functionality
-from matplotlib import rcParams, pyplot as plt
-from GetData import TikerData
-from VisulizeData import VisulizeData
-from PreProcessing import PreProcessing
-from model_LSTM import model_LSTM
+
 # from SMAcross import SMAcross
-from BackTesting import BackTesting
 
 # ======================input======================
 today = date.today()
 print("Today's date:", today)
-endDate = date(2021, 5, 20)
-startDate = date(2020, 5, 20)
+endDate = date(2021, 7, 3)
+startDate = date(2021, 6, 20)
 ticker = 'MSFT'
 # ======================get price data======================
 

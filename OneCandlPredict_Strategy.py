@@ -1,8 +1,7 @@
 import backtrader as bt
 from model_LSTM import model_LSTM
-from GetData import TikerData
 from PreProcessing import PreProcessing
-from datetime import date
+
 
 class OneCandlPredict_Strategy(bt.Strategy):
 
