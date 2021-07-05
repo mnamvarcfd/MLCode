@@ -29,12 +29,6 @@ class VisulizeData:
 
 
 
-
-
-
-
-
-
 class VisulizeDataCandle:
 
     def __init__(self, tikerData):

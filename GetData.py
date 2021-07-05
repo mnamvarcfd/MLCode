@@ -1,30 +1,28 @@
 from pandas_datareader.data import DataReader
 import yfinance as yf
-import pandas as pd
-class TikerData:
+import mplfinance as mpf
 
-    def __init__(self, ticker, startDate, endDate):
+
+
+class GetData:
+
+    def __init__(self, ticker, startDate, endDate, interval):
         self.pricSourc = 'yahoo'
         self.ticker = ticker
         self.startDate = startDate
         self.endDate = endDate
-        self.price= self.getPricData()
+        self.interval = interval
 
-    def getPricData(self):
-        # price = DataReader(self.ticker, self.pricSourc, self.startDate, self.endDate)
+        # self.price = DataReader(self.ticker, self.pricSourc, self.startDate, self.endDate)
+        self.price = yf.download(ticker, start=startDate, end=endDate, interval=interval, auto_adjust=True)
 
-        price = yf.download(self.ticker, start=self.startDate, end=self.endDate, interval="1m", auto_adjust=True)
 
-        price.to_csv('filename.csv')
-        price.reset_index(inplace=True, drop=False)
+    def writePric(self):
+        self.price.to_csv('priceData.csv')
+        self.price.reset_index(inplace=True, drop=False)
         # price.index = pd.DatetimeIndex(price['Datetime'])
 
-        return price
 
-# import yfinance as yf
-# intraday_data = yf.download(tickers="BA", period="1d", interval="1m",auto_adjust=True)
-# intraday_data.head()
-# import matplotlib.pyplot as plt
-#
-# intraday_data['Close'].plot()
-# plt.show()
+    def plotCandleStick(self):
+        self.price.index.name = 'Date'
+        mpf.plot(self.price, title=self.ticker, type='candle')

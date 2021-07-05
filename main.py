@@ -6,15 +6,18 @@ from datetime import date  # date and time functionality
 # ======================input======================
 today = date.today()
 print("Today's date:", today)
-endDate = date(2021, 7, 3)
-startDate = date(2021, 6, 20)
+endDate = date(2021, 7, 2)
+startDate = date(2021, 6, 28)
+interval = "1m"
 ticker = 'MSFT'
 # ======================get price data======================
 
-# tikerData = TikerData(ticker, startDate, endDate)
+from GetData import GetData
+MSF = GetData(ticker, startDate, endDate, interval)
 # import yfinance as yf
 # price = yf.download(ticker, period="2d", interval="1m", auto_adjust=True)
-
+MSF.plotCandleStick()
+MSF.writePric()
 
 
 
@@ -28,9 +31,9 @@ ticker = 'MSFT'
 
 # print(len(dataset))
 
-from BackTesting import BackTesting
-backTesting = BackTesting()
-backTesting.run()
+# from BackTesting import BackTesting
+# backTesting = BackTesting()
+# backTesting.run()
 
 
 # closing_price = model.evaluate()

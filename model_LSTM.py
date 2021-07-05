@@ -90,6 +90,7 @@ class model_LSTM:
         self.model.compile(loss='mean_squared_error', optimizer='adam')
         self.model.fit(self.trainInputData, self.trainOutputData, epochs=1, batch_size=1, verbose=2)
 
+
     def evaluate(self):
         testResult = self.model.predict(self.testInputData)
         testResult = self.scaler.inverse_transform(testResult)  # scaling data
@@ -99,7 +100,7 @@ class model_LSTM:
 
 
 
-    def predict(self, lastData):
+    def predictNextCand(self, lastData):
 
         data = []
         data.append(self.dataSet[lastData - 60:lastData, :])
@@ -112,24 +113,24 @@ class model_LSTM:
 
         return predicted
 
-    #
-    # def predict(self, lastData, numCandles):
-    #
-    #     results = []
-    #     data = []
-    #     data.append(self.dataSet[lastData - 60:lastData, :])
-    #
-    #     data = np.array(data)
-    #
-    #     for i in range(0, numCandles):
-    #         data = np.reshape(data, (data.shape[0], data.shape[1], 1))
-    #         predicted = self.model.predict(data)
-    #
-    #         data = np.append(data, predicted)
-    #
-    #         data = np.delete(data, 0, 0)
-    #
-    #         results = np.append(results, predicted)
-    #
-    #     results = self.scaler.inverse_transform(results)
-    #     return results
+
+    def predictTrend(self, lastData, numCandles):
+
+        results = []
+        data = []
+        data.append(self.dataSet[lastData - 60:lastData, :])
+
+        data = np.array(data)
+
+        for i in range(0, numCandles):
+            data = np.reshape(data, (data.shape[0], data.shape[1], 1))
+            predicted = self.model.predictNextCand(data)
+
+            data = np.append(data, predicted)
+
+            data = np.delete(data, 0, 0)
+
+            results = np.append(results, predicted)
+
+        results = self.scaler.inverse_transform(results)
+        return results

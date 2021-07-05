@@ -1,5 +1,4 @@
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import (absolute_import, division, print_function,unicode_literals)
 import backtrader as bt
 import backtrader.feeds as btfeeds
 from datetime import date  # date and time functionality
@@ -9,7 +8,9 @@ from OneCandlPredict_Strategy import OneCandlPredict_Strategy as st
 import yfinance as yf
 import backtrader.feeds
 import datetime
-from GetData import TikerData
+from GetData import GetData
+
+
 
 class BackTesting():
 
@@ -19,9 +20,9 @@ class BackTesting():
         ticker = 'SPY'
         period = "1d"
         interval = "1m"
-        endDate = date(2021, 5, 27)
-        startDate = date(2021, 5, 25)
-        tikerData = TikerData(ticker, startDate, endDate)
+        endDate = date(2021, 6, 5)
+        startDate = date(2021, 6, 3)
+        tikerData = GetData(ticker, startDate, endDate)
 
         self.data = btfeeds.GenericCSVData(
             dataname='filename.csv',

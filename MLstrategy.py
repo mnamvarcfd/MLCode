@@ -1,6 +1,6 @@
 import backtrader as bt
 from model_LSTM import model_LSTM
-from GetData import TikerData
+from GetData import GetData
 from PreProcessing import PreProcessing
 
 # Create a Stratey
@@ -34,7 +34,7 @@ class MLstrategy(bt.Strategy):
         self.buycomm = None
 
         print('tikerData', self.ticker)
-        tikerData = TikerData(self.ticker, self.startDate, self.endDate)
+        tikerData = GetData(self.ticker, self.startDate, self.endDate)
 
         preProcessing = PreProcessing(tikerData.price)
         dataset = preProcessing.creatDataSet()

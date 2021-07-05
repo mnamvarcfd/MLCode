@@ -1,5 +1,5 @@
 import backtrader as bt
-from GetData import TikerData
+from GetData import GetData
 
 
 # Create a Stratey
@@ -31,7 +31,7 @@ class SimpleStrategy(bt.Strategy):
         self.buycomm = None
 
         print('tikerData', self.ticker)
-        tikerData = TikerData(self.ticker, self.startDate, self.endDate)
+        tikerData = GetData(self.ticker, self.startDate, self.endDate)
         # tikerData.price['Date'] = self.data.lines.datetime[0]
         # tikerData.price['Open'] = self.data.lines.open[0]
         # tikerData.price['Close'] = self.data.lines.close[0]
