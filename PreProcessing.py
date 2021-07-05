@@ -1,5 +1,6 @@
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
+
+
 
 class PreProcessing:
 
@@ -20,22 +21,3 @@ class PreProcessing:
         for i in range(0, len(data)):
             # self.dataFrame['Date'][i] = data['Date'][i]
             self.dataFrame['Close'][i] = data['Close'][i]
-
-
-    # setting index
-    def setDataFrameIndex(self):
-        # self.dataFrame.index = self.dataFrame.Date
-
-        # self.dataFrame.drop('Date', axis=1)#, inplace=False
-        # self.dataFrame = self.dataFrame.values
-        print('here')
-
-
-    def creatDataSet(self):
-        # self.indexInput()
-        self.creatDataFrame()
-        # self.setDataFrameIndex()
-
-        return self.dataFrame
-
-

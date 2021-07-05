@@ -19,10 +19,14 @@ class GetData:
 
     def writePric(self):
         self.price.to_csv('priceData.csv')
-        self.price.reset_index(inplace=True, drop=False)
+        # self.price.reset_index(inplace=True, drop=False)
         # price.index = pd.DatetimeIndex(price['Datetime'])
 
 
     def plotCandleStick(self):
         self.price.index.name = 'Date'
         mpf.plot(self.price, title=self.ticker, type='candle')
+
+
+    def getPrice(self):
+        return self.price

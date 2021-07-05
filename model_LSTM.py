@@ -4,20 +4,23 @@ from keras.layers import Dense, LSTM
 from keras.models import Sequential
 from sklearn.preprocessing import MinMaxScaler
 
+
+
 class model_LSTM:
 
-    def __init__(self, dataSet, trainPortion):
-        self.trainLengt = int(len(dataSet) * trainPortion)
-        self.testLengt = int(len(dataSet) - self.trainLengt)
+    def __init__(self, dataFrame, trainPortion):
+        self.lenght = 60
+        self.trainLengt = int(len(dataFrame) * trainPortion)
+        self.testLengt = int(len(dataFrame) - self.trainLengt)
 
         # creating train and test sets
-        dataSet = dataSet.values
+        dataFrame = dataFrame.values
 
         # converting dataset into x_train and y_train
         self.scaler = MinMaxScaler(feature_range=(0, 1))
-        dataSet = self.scaler.fit_transform(dataSet)
+        dataFrame = self.scaler.fit_transform(dataFrame)
 
-        self.dataSet = dataSet
+        self.dataSet = dataFrame
 
         self.trainInputData = None
         self.trainOutputData = None
@@ -37,8 +40,8 @@ class model_LSTM:
 
         trainInput = []
         trainOutput = []
-        for i in range(60, len(data)):
-            trainInput.append(data[i - 60:i, 0])
+        for i in range(self.lenght, len(data)):
+            trainInput.append(data[i - self.lenght:i, 0])
             trainOutput.append(data[i, 0])
 
         trainInputData = np.array(trainInput)
@@ -72,7 +75,7 @@ class model_LSTM:
         testInput = []
         testOutput = []
         for i in range(0, self.testLengt):
-            testInput.append(data[self.trainLengt-60+i:self.trainLengt+i, 0])
+            testInput.append(data[self.trainLengt-self.lenght+i:self.trainLengt+i, 0])
             testOutput.append(data[self.trainLengt + i, 0])
 
         testInput = np.array(testInput)
@@ -103,7 +106,7 @@ class model_LSTM:
     def predictNextCand(self, lastData):
 
         data = []
-        data.append(self.dataSet[lastData - 60:lastData, :])
+        data.append(self.dataSet[lastData - self.lenght:lastData, :])
 
         data = np.array(data)
 
@@ -118,7 +121,7 @@ class model_LSTM:
 
         results = []
         data = []
-        data.append(self.dataSet[lastData - 60:lastData, :])
+        data.append(self.dataSet[lastData - self.lenght:lastData, :])
 
         data = np.array(data)
 
