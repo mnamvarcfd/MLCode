@@ -1,9 +1,13 @@
 # import packages
 from datetime import date  # date and time functionality
 
+import numpy as np
+from matplotlib import pyplot as plt
 # from SMAcross import SMAcross
 
 # ======================input======================
+from mpmath import mpf
+
 today = date.today()
 print("Today's date:", today)
 endDate = date(2021, 7, 2)
@@ -14,20 +18,29 @@ ticker = 'MSFT'
 
 from GetData import GetData
 MSF = GetData(ticker, startDate, endDate, interval)
-# import yfinance as yf
-# price = yf.download(ticker, period="2d", interval="1m", auto_adjust=True)
-MSF.plotCandleStick()
-MSF.writePric()
+# MSF.plotCandleStick()
+# MSF.writePric()
 
 
+from PreProcessing import PreProcessing
+preProcessing = PreProcessing(MSF.price)
+dataFrame = preProcessing.creatDataFrame()
 
-# preProcessing = PreProcessing(tikerData)
-# dataset = preProcessing.creatDataSet()
-
-# dataset['Close'].plot()
+# dataFrame['Close'].plot()
 # plt.show()
 
-# model = model_LSTM(dataset, 0.7)
+
+from model_LSTM import model_LSTM
+model = model_LSTM(dataFrame, 0.7)
+# model.predictNextCand(len(dataFrame)-5)
+result = model.predictTrend(len(dataFrame)-500, 500)
+result = np.array(result)
+plt.plot(result)
+plt.show()
+
+
+
+
 
 # print(len(dataset))
 

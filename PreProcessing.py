@@ -21,3 +21,5 @@ class PreProcessing:
         for i in range(0, len(data)):
             # self.dataFrame['Date'][i] = data['Date'][i]
             self.dataFrame['Close'][i] = data['Close'][i]
+
+        return self.dataFrame
