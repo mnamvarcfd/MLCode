@@ -15,18 +15,22 @@ from GetData import GetData
 class BackTesting():
 
     def __init__(self, ticker, startDate, endDate, interval):
-        # print('BackTesting.ticker', st.ticker)
 
-        # ticker = 'SPY'
-        # period = "1d"
-        # interval = "1m"
-        # endDate = date(2021, 6, 5)
-        # startDate = date(2021, 6, 3)
-        tikerData = GetData(ticker, startDate, endDate, interval)
+        # self.ticker = ticker
+        # # period = "1d"
+        # # interval = "1m"
+        # # endDate = date(2021, 6, 5)
+        # # startDate = date(2021, 6, 3)
+        # tikerData = GetData(ticker, startDate, endDate, interval)
+        # tikerData.writePric()
+
+        tikerData = GetData()
         tikerData.writePric()
+        priceFileName = tikerData.priceFileName
+
 
         self.data = btfeeds.GenericCSVData(
-            dataname=tikerData.priceFileName,
+            dataname=priceFileName,
             timeframe=bt.TimeFrame.Minutes,
             compression=1,
             sessionstart=datetime.time(9, 30),

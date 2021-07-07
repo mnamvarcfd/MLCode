@@ -9,12 +9,12 @@ class MLstrategy(bt.Strategy):
         ('exitbars', 5),
     )
 
-    ticker = 'SPY'
+    ticker = 'MSFT'
     period = "1d"
     interval = "1m"
     from datetime import date
-    endDate = date(2021, 5, 27)
-    startDate = date(2021, 5, 25)
+    endDate = date(2021, 7, 2)
+    startDate = date(2021, 6, 28)
 
 
     def log(self, txt, dt=None):

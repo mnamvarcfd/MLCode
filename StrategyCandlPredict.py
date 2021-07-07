@@ -1,6 +1,7 @@
 import backtrader as bt
 from model_LSTM import model_LSTM
 from PreProcessing import PreProcessing
+from GetData import GetData
 
 
 class StrategyCandlPredict(bt.Strategy):
@@ -12,6 +13,8 @@ class StrategyCandlPredict(bt.Strategy):
 
 
     def __init__(self):
+        print('StrategyCandlPredict')
+
         # Keep a reference to the "close" line in the data[0] dataseries
         self.dataclose = self.datas[0].close
 
@@ -21,16 +24,18 @@ class StrategyCandlPredict(bt.Strategy):
         self.buycomm = None
         self.barCount = 0
 
-        from GetData import GetData
-        from datetime import date
-        ticker = 'SPY'
-        interval = "1m"
-        startDate = date(2021, 5, 25)
-        endDate = date(2021, 5, 27)
-        tikerData = GetData(ticker, startDate, endDate, interval)
+        # from GetData import GetData
+        # from datetime import date
+        # ticker = 'MSFT'
+        # interval = "15m"
+        # endDate = date(2021, 7, 2)
+        # startDate = date(2021, 6, 20)
+        # tikerData = GetData(ticker, startDate, endDate, interval)
+        tikerData = GetData()
         price = tikerData.price
 
         # price = self.data.lines
+
         # price= {}
         # price['Date'] = []
         # price['Open'] = []
@@ -54,13 +59,6 @@ class StrategyCandlPredict(bt.Strategy):
         price['High'] = self.data.lines.high[0]
         price['Low'] = self.data.lines.low[0]
         price['Volume'] = self.data.lines.volume[0]
-
-        # import pandas as pd
-        # price.index = pd.DatetimeIndex(price['Date'])
-
-
-
-
 
         preProcessing = PreProcessing(price)
         dataset = preProcessing.creatDataFrame()

@@ -11,22 +11,22 @@ from mpmath import mpf
 today = date.today()
 print("Today's date:", today)
 endDate = date(2021, 7, 2)
-startDate = date(2021, 6, 28)
-interval = "1m"
+startDate = date(2021, 6, 20)
+interval = "15m"
 ticker = 'MSFT'
 # ======================get price data======================
 # print('============', endDate-startDate)
 
 
 from GetData import GetData
-MSF = GetData(ticker, startDate, endDate, interval)
-# MSF.plotCandleStick()
-# MSF.writePric()
-
-
-from PreProcessing import PreProcessing
-preProcessing = PreProcessing(MSF.price)
-dataFrame = preProcessing.creatDataFrame()
+# MSF = GetData(ticker, startDate, endDate, interval)
+# # MSF.plotCandleStick()
+# # MSF.writePric()
+#
+#
+# from PreProcessing import PreProcessing
+# preProcessing = PreProcessing(MSF.price)
+# dataFrame = preProcessing.creatDataFrame()
 
 # dataFrame['Close'].plot()
 # plt.show()
