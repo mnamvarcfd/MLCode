@@ -8,12 +8,12 @@ from matplotlib import pyplot as plt
 # ======================input======================
 from mpmath import mpf
 
-today = date.today()
-print("Today's date:", today)
-endDate = date(2021, 7, 2)
-startDate = date(2021, 6, 20)
-interval = "15m"
-ticker = 'MSFT'
+# today = date.today()
+# print("Today's date:", today)
+# endDate = date(2021, 7, 2)
+# startDate = date(2021, 6, 20)
+# interval = "15m"
+# ticker = 'MSFT'
 # ======================get price data======================
 # print('============', endDate-startDate)
 
@@ -47,7 +47,7 @@ from model_LSTM import model_LSTM
 # print(len(dataset))
 
 from BackTesting import BackTesting
-backTesting = BackTesting(ticker, startDate, endDate, interval)
+backTesting = BackTesting()
 backTesting.run()
 
 

@@ -14,7 +14,7 @@ from GetData import GetData
 
 class BackTesting():
 
-    def __init__(self, ticker, startDate, endDate, interval):
+    def __init__(self):
 
         # self.ticker = ticker
         # # period = "1d"
