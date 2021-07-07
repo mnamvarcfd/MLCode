@@ -3,7 +3,7 @@ from model_LSTM import model_LSTM
 from PreProcessing import PreProcessing
 
 
-class OneCandlPredict_Strategy(bt.Strategy):
+class StrategyCandlPredict(bt.Strategy):
 
     def log(self, txt, dt=None):
         ''' Logging function fot this strategy'''
@@ -21,19 +21,33 @@ class OneCandlPredict_Strategy(bt.Strategy):
         self.buycomm = None
         self.barCount = 0
 
-        # tikerData = TikerData(self.ticker, self.startDate, self.endDate)
+        from GetData import GetData
+        from datetime import date
+        ticker = 'SPY'
+        interval = "1m"
+        startDate = date(2021, 5, 25)
+        endDate = date(2021, 5, 27)
+        tikerData = GetData(ticker, startDate, endDate, interval)
+        price = tikerData.price
 
         # price = self.data.lines
-        # price=None
-        # for i in range(0, 100):
-        #     price['Date'][i] = self.data.lines.datetime[i]
-        #     price['Open'][i] = self.data.lines.open[i]
-        #     price['Close'][i] = self.data.lines.close[i]
-        #     price['High'][i] = self.data.lines.high[i]
-        #     price['Low'][i] = self.data.lines.low[i]
-        #     price['Volume'][i] = self.data.lines.volume[i]
+        # price= {}
+        # price['Date'] = []
+        # price['Open'] = []
+        # price['Close'] = []
+        # price['High'] = []
+        # price['Low'] = []
+        # price['Volume'] = []
+        #
+        # for i in range(0, len(self.data.lines.datetime.array)):
+        #     price['Date'].append(self.data.lines.datetime[i])
+        #     price['Open'].append(self.data.lines.open[i])
+        #     price['Close'].append(self.data.lines.close[i])
+        #     price['High'].append(self.data.lines.high[i])
+        #     price['Low'].append(self.data.lines.low[i])
+        #     price['Volume'].append(self.data.lines.volume[i])
 
-        price=['Date','Open','Close','High','Low','Volume']
+        # price = ['Date', 'Open', 'Close', 'High', 'Low', 'Volume']
         price['Date'] = self.data.lines.datetime[0]
         price['Open'] = self.data.lines.open[0]
         price['Close'] = self.data.lines.close[0]
@@ -41,10 +55,17 @@ class OneCandlPredict_Strategy(bt.Strategy):
         price['Low'] = self.data.lines.low[0]
         price['Volume'] = self.data.lines.volume[0]
 
+        # import pandas as pd
+        # price.index = pd.DatetimeIndex(price['Date'])
+
+
+
+
+
         preProcessing = PreProcessing(price)
-        dataset = preProcessing.creatDataSet()
-        model = model_LSTM(dataset, 0.3)
-        self.model = model
+        dataset = preProcessing.creatDataFrame()
+        self.model = model_LSTM(dataset, 0.3)
+
         self.startTesting = len(dataset)*0.3
 
 
@@ -88,6 +109,8 @@ class OneCandlPredict_Strategy(bt.Strategy):
 
     def next(self):
         self.barCount=self.barCount+1
+
+        # Check if handeling a test or train candel? Just backtest test candels
         if self.barCount<self.startTesting:
             # self.log('no trade, %d' % self.barCount)
             return
@@ -96,7 +119,7 @@ class OneCandlPredict_Strategy(bt.Strategy):
         if self.order:
             return
 
-        nextPrice = self.model.predict(self.barCount)
+        nextPrice = self.model.predictNextCand(self.barCount)
 
         # Not yet ... we MIGHT BUY if ...
         if self.dataclose[0] < nextPrice:

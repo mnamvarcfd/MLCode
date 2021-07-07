@@ -4,7 +4,7 @@ import backtrader.feeds as btfeeds
 from datetime import date  # date and time functionality
 # from MLstrategy import MLstrategy as st
 # from SimpleStrategy import SimpleStrategy as st
-from OneCandlPredict_Strategy import OneCandlPredict_Strategy as st
+from StrategyCandlPredict import StrategyCandlPredict as st
 import yfinance as yf
 import backtrader.feeds
 import datetime
@@ -14,18 +14,19 @@ from GetData import GetData
 
 class BackTesting():
 
-    def __init__(self):
+    def __init__(self, ticker, startDate, endDate, interval):
         # print('BackTesting.ticker', st.ticker)
 
-        ticker = 'SPY'
-        period = "1d"
-        interval = "1m"
-        endDate = date(2021, 6, 5)
-        startDate = date(2021, 6, 3)
-        tikerData = GetData(ticker, startDate, endDate)
+        # ticker = 'SPY'
+        # period = "1d"
+        # interval = "1m"
+        # endDate = date(2021, 6, 5)
+        # startDate = date(2021, 6, 3)
+        tikerData = GetData(ticker, startDate, endDate, interval)
+        tikerData.writePric()
 
         self.data = btfeeds.GenericCSVData(
-            dataname='filename.csv',
+            dataname=tikerData.priceFileName,
             timeframe=bt.TimeFrame.Minutes,
             compression=1,
             sessionstart=datetime.time(9, 30),

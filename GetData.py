@@ -16,9 +16,11 @@ class GetData:
         # self.price = DataReader(self.ticker, self.pricSourc, self.startDate, self.endDate)
         self.price = yf.download(ticker, start=startDate, end=endDate, interval=interval, auto_adjust=True)
 
+        self.priceFileName = 'priceData.csv'
+
 
     def writePric(self):
-        self.price.to_csv('priceData.csv')
+        self.price.to_csv(self.priceFileName)
         # self.price.reset_index(inplace=True, drop=False)
         # price.index = pd.DatetimeIndex(price['Datetime'])
 

@@ -15,6 +15,8 @@ startDate = date(2021, 6, 28)
 interval = "1m"
 ticker = 'MSFT'
 # ======================get price data======================
+# print('============', endDate-startDate)
+
 
 from GetData import GetData
 MSF = GetData(ticker, startDate, endDate, interval)
@@ -31,12 +33,12 @@ dataFrame = preProcessing.creatDataFrame()
 
 
 from model_LSTM import model_LSTM
-model = model_LSTM(dataFrame, 0.7)
+# model = model_LSTM(dataFrame, 0.7)
 # model.predictNextCand(len(dataFrame)-5)
-result = model.predictTrend(len(dataFrame)-500, 500)
-result = np.array(result)
-plt.plot(result)
-plt.show()
+# result = model.predictTrend(len(dataFrame)-500, 500)
+# result = np.array(result)
+# plt.plot(result)
+# plt.show()
 
 
 
@@ -44,9 +46,9 @@ plt.show()
 
 # print(len(dataset))
 
-# from BackTesting import BackTesting
-# backTesting = BackTesting()
-# backTesting.run()
+from BackTesting import BackTesting
+backTesting = BackTesting(ticker, startDate, endDate, interval)
+backTesting.run()
 
 
 # closing_price = model.evaluate()
