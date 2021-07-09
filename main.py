@@ -19,9 +19,9 @@ from mpmath import mpf
 
 
 from GetData import GetData
-# MSF = GetData(ticker, startDate, endDate, interval)
-# # MSF.plotCandleStick()
-# # MSF.writePric()
+MSF = GetData()
+MSF.plotCandleStick()
+MSF.writePric()
 #
 #
 # from PreProcessing import PreProcessing

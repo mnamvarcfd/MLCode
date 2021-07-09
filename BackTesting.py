@@ -15,6 +15,7 @@ from GetData import GetData
 class BackTesting():
 
     def __init__(self):
+        print('BackTesting')
 
         # self.ticker = ticker
         # # period = "1d"
@@ -56,7 +57,7 @@ class BackTesting():
 
         cerebro.broker.setcash(50000.0)
         # Set the commission - 0.1% ... divide by 100 to remove the %
-        cerebro.broker.setcommission(commission=0.001)
+        cerebro.broker.setcommission(commission=0.0001)
 
         print('add strategy')
         cerebro.addstrategy(st)

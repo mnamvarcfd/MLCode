@@ -88,7 +88,7 @@ class model_LSTM:
         data = np.reshape(data, (data.shape[0], data.shape[1], 1))
         predicted = self.model.predict(data)
         predicted = self.scaler.inverse_transform(predicted)  # scaling data
-        print("predicted value: ", predicted)
+        # print("predicted value: ", predicted)
         return predicted
 
 

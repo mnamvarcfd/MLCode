@@ -21,13 +21,13 @@ class GetData:
 
     def __init__(self):
         self.pricSourc = 'yahoo'
-        self.ticker = 'MSFT'
-        self.startDate = date(2021, 6, 20)
-        self.endDate = date(2021, 7, 2)
-        self.interval = "15m"
+        self.ticker = 'SPY'
+        self.startDate = date(2021, 6, 29)
+        self.endDate = date(2021, 7, 8)
+        self.interval = "30m"
 
-        # self.price = DataReader(self.ticker, self.pricSourc, self.startDate, self.endDate)
-        self.price = yf.download(self.ticker, start=self.startDate, end=self.endDate, interval=self.interval, auto_adjust=True)
+        self.price = DataReader(self.ticker, self.pricSourc, self.startDate, self.endDate)
+        # self.price = yf.download(self.ticker, start=self.startDate, end=self.endDate, interval=self.interval, auto_adjust=True)
 
         self.priceFileName = 'priceData.csv'
 
