@@ -1,7 +1,7 @@
 import backtrader as bt
-from model_LSTM import model_LSTM
 from PreProcessing import PreProcessing
 from GetData import GetData
+from model_LSTM import model_LSTM
 
 
 class StrategyCandlPredict(bt.Strategy):
@@ -35,7 +35,6 @@ class StrategyCandlPredict(bt.Strategy):
         self.startTesting = len(dataFrame)*0.9
 
         self.price = tikerData.price
-
 
 
     def notify_order(self, order):
@@ -80,9 +79,11 @@ class StrategyCandlPredict(bt.Strategy):
         self.barCount = self.barCount + 1
 
 
+
+
         # print(self.barCount, " ======== ", self.dataClose[0],"-----", self.price['Close'][self.barCount])
         # Check if handeling a test or train candel? Just backtest test candels
-        if self.barCount<self.startTesting or self.barCount > len(self.price)-1:
+        if self.barCount<self.startTesting or self.barCount > len(self.price)-2:
             # self.log('no trade, %d' % self.barCount)
             return
 
@@ -90,41 +91,72 @@ class StrategyCandlPredict(bt.Strategy):
         if self.order:
             return
 
-        # nextPrice = self.model.predictNextCand(self.barCount)
-        # nextPrice = self.price['Close'][self.barCount]
-        # print(self.price['Open'][self.barCount], " ===============", self.price['Close'][self.barCount])
+        # print(self.barCount, "open: ", self.price['Open'][self.barCount + 1])
+        # print(self.barCount, "clos: ", self.price['Close'][self.barCount + 1])
+        # print(self.barCount, "high: ", self.price['High'][self.barCount + 1])
+        # print(self.barCount, " low: ", self.price['Low'][self.barCount + 1])
+        # print("close ======== ", self.dataClose[0])
 
-        # Not yet ... we MIGHT BUY if ...
-        # if self.dataClose[0] < nextPrice:
-        # if 1 < 2:
-        if self.price['Open'][self.barCount] < self.price['Close'][self.barCount]:
+        # nStock = int(self.getvalue()/self.price['High'][self.barCount + 1])
+        print("getsizer ======== ", self.order_target_size())
+        nStock = 1
 
-            # print('currentPrice: ', self.dataclose[0], 'nextPrice: ', nextPrice)
+        self.order = self.buy(exectype=bt.Order.Limit,price=self.price['Low'][self.barCount+1], size=nStock)
+        print(self.barCount, " ======================buy at: ", self.price['Low'][self.barCount+1])
 
-            # BUY, BUY, BUY!!! (with default parameters)
+        self.order = self.sell(exectype=bt.Order.Limit, price=self.price['High'][self.barCount + 1], size=nStock)
+        print(self.barCount, "----------------------------------sell at: ", self.price['High'][self.barCount + 1])
 
-            # self.log('BUY CREATE, %.2f' % self.dataclose[0]*0.99)
 
-
-            # Keep track of the created order to avoid a 2nd order
-            #valid=datetime.datetime.now() + datetime.timedelta(days=3))
-            # self.order = self.buy(price=self.dataOpen[0])
-            self.order = self.buy(exectype=bt.Order.Limit,price=self.price['Open'][self.barCount]+1)
-            print(self.barCount, " ======================buy at: ", self.price['Open'][self.barCount]+1)
-
-            # print(self.barCount, "open: ", self.price['Open'][self.barCount + 1])
-            # print(self.barCount, "clos: ", self.price['Close'][self.barCount + 1])
-            # print(self.barCount, "high: ", self.price['High'][self.barCount + 1])
-            # print(self.barCount, " low: ", self.price['Low'][self.barCount + 1])
-            # print("close ======== ", self.dataClose[0])
-
-        # Check if we are in the market
-        if self.position:
-
-            # SELL, SELL, SELL!!! (with all possible default parameters)
-            # self.log('SELL CREATE, %.2f' % nextPrice)
-
-            # Keep track of the created order to avoid a 2nd order
-            # self.order = self.sell(price=self.dataClose[0])
-            self.order = self.sell(exectype=bt.Order.Limit, price=self.price['Close'][self.barCount]+1)
-            print(self.barCount, "----------------------------------sell at: ", self.price['Close'][self.barCount]+1)
+    # def next(self):
+    #     self.barCount = self.barCount + 1
+    #
+    #
+    #     # print(self.barCount, " ======== ", self.dataClose[0],"-----", self.price['Close'][self.barCount])
+    #     # Check if handeling a test or train candel? Just backtest test candels
+    #     if self.barCount<self.startTesting or self.barCount > len(self.price)-1:
+    #         # self.log('no trade, %d' % self.barCount)
+    #         return
+    #
+    #     # Check if an order is pending ... if yes, we cannot send a 2nd one
+    #     if self.order:
+    #         return
+    #
+    #     # nextPrice = self.model.predictNextCand(self.barCount)
+    #     # nextPrice = self.price['Close'][self.barCount]
+    #     # print(self.price['Open'][self.barCount], " ===============", self.price['Close'][self.barCount])
+    #
+    #     # Not yet ... we MIGHT BUY if ...
+    #     # if self.dataClose[0] < nextPrice:
+    #     # if 1 < 2:
+    #     if self.price['Open'][self.barCount] < self.price['Close'][self.barCount]:
+    #
+    #         # print('currentPrice: ', self.dataclose[0], 'nextPrice: ', nextPrice)
+    #
+    #         # BUY, BUY, BUY!!! (with default parameters)
+    #
+    #         # self.log('BUY CREATE, %.2f' % self.dataclose[0]*0.99)
+    #
+    #
+    #         # Keep track of the created order to avoid a 2nd order
+    #         #valid=datetime.datetime.now() + datetime.timedelta(days=3))
+    #         # self.order = self.buy(price=self.dataOpen[0])
+    #         self.order = self.buy(exectype=bt.Order.Limit,price=self.price['Open'][self.barCount]+1)
+    #         print(self.barCount, " ======================buy at: ", self.price['Open'][self.barCount]+1)
+    #
+    #         # print(self.barCount, "open: ", self.price['Open'][self.barCount + 1])
+    #         # print(self.barCount, "clos: ", self.price['Close'][self.barCount + 1])
+    #         # print(self.barCount, "high: ", self.price['High'][self.barCount + 1])
+    #         # print(self.barCount, " low: ", self.price['Low'][self.barCount + 1])
+    #         # print("close ======== ", self.dataClose[0])
+    #
+    #     # Check if we are in the market
+    #     if self.position:
+    #
+    #         # SELL, SELL, SELL!!! (with all possible default parameters)
+    #         # self.log('SELL CREATE, %.2f' % nextPrice)
+    #
+    #         # Keep track of the created order to avoid a 2nd order
+    #         # self.order = self.sell(price=self.dataClose[0])
+    #         self.order = self.sell(exectype=bt.Order.Limit, price=self.price['Close'][self.barCount]+1)
+    #         print(self.barCount, "----------------------------------sell at: ", self.price['Close'][self.barCount]+1)
