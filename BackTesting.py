@@ -45,7 +45,7 @@ class BackTesting():
 
         cerebro.broker.setcash(50000.0)
         # Set the commission - 0.1% ... divide by 100 to remove the %
-        cerebro.broker.setcommission(commission=0.0001)
+        cerebro.broker.setcommission(commission=0.00001)
 
         print('add strategy')
         cerebro.addstrategy(st)

@@ -6,6 +6,8 @@ from model_LSTM import model_LSTM
 
 class StrategyCandlPredict(bt.Strategy):
 
+    params = (('sizer', None),)
+
     def log(self, txt, dt=None):
         ''' Logging function fot this strategy'''
         dt = dt or self.datas[0].datetime.date(0)
@@ -14,6 +16,10 @@ class StrategyCandlPredict(bt.Strategy):
 
     def __init__(self):
         # print('StrategyCandlPredict')
+
+        if self.p.sizer is not None:
+            self.sizer = self.p.sizer
+
 
         # Keep a reference to the "close" line in the data[0] dataseries
 
@@ -78,34 +84,22 @@ class StrategyCandlPredict(bt.Strategy):
     def next(self):
         self.barCount = self.barCount + 1
 
-
-
-
-        # print(self.barCount, " ======== ", self.dataClose[0],"-----", self.price['Close'][self.barCount])
-        # Check if handeling a test or train candel? Just backtest test candels
         if self.barCount<self.startTesting or self.barCount > len(self.price)-2:
-            # self.log('no trade, %d' % self.barCount)
             return
 
         # Check if an order is pending ... if yes, we cannot send a 2nd one
         if self.order:
             return
 
-        # print(self.barCount, "open: ", self.price['Open'][self.barCount + 1])
-        # print(self.barCount, "clos: ", self.price['Close'][self.barCount + 1])
-        # print(self.barCount, "high: ", self.price['High'][self.barCount + 1])
-        # print(self.barCount, " low: ", self.price['Low'][self.barCount + 1])
-        # print("close ======== ", self.dataClose[0])
+        buyPrice = self.price['Low'][self.barCount+1]
+        selPrice = self.price['High'][self.barCount + 1]
+        nStock = int(self.broker.getvalue()/buyPrice)
 
-        # nStock = int(self.getvalue()/self.price['High'][self.barCount + 1])
-        print("getsizer ======== ", self.order_target_size())
-        nStock = 1
+        self.order = self.buy(exectype=bt.Order.Limit,price=buyPrice, size=nStock)
+        print(self.barCount, " ======================buy at: ", buyPrice)
 
-        self.order = self.buy(exectype=bt.Order.Limit,price=self.price['Low'][self.barCount+1], size=nStock)
-        print(self.barCount, " ======================buy at: ", self.price['Low'][self.barCount+1])
-
-        self.order = self.sell(exectype=bt.Order.Limit, price=self.price['High'][self.barCount + 1], size=nStock)
-        print(self.barCount, "----------------------------------sell at: ", self.price['High'][self.barCount + 1])
+        self.order = self.sell(exectype=bt.Order.Limit, price=selPrice, size=nStock)
+        print(self.barCount, "----------------------------------sell at: ", selPrice)
 
 
     # def next(self):
