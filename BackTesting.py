@@ -1,34 +1,22 @@
 from __future__ import (absolute_import, division, print_function,unicode_literals)
 import backtrader as bt
 import backtrader.feeds as btfeeds
-from datetime import date  # date and time functionality
+import datetime
+from GetData import GetData
+
 # from MLstrategy import MLstrategy as st
 # from SimpleStrategy import SimpleStrategy as st
 from StrategyCandlPredict import StrategyCandlPredict as st
-import yfinance as yf
-import backtrader.feeds
-import datetime
-from GetData import GetData
 
 
 
 class BackTesting():
 
     def __init__(self):
-        print('BackTesting')
-
-        # self.ticker = ticker
-        # # period = "1d"
-        # # interval = "1m"
-        # # endDate = date(2021, 6, 5)
-        # # startDate = date(2021, 6, 3)
-        # tikerData = GetData(ticker, startDate, endDate, interval)
-        # tikerData.writePric()
 
         tikerData = GetData()
         tikerData.writePric()
         priceFileName = tikerData.priceFileName
-
 
         self.data = btfeeds.GenericCSVData(
             dataname=priceFileName,

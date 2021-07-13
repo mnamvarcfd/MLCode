@@ -16,9 +16,11 @@ class StrategyCandlPredict(bt.Strategy):
         # print('StrategyCandlPredict')
 
         # Keep a reference to the "close" line in the data[0] dataseries
+
         self.dataClose = self.datas[0].close
         self.dataOpen = self.datas[0].open
         self.dateTime = self.datas[0].datetime
+
 
         # To keep track of pending orders and buy price/commission
         self.order = None
@@ -100,7 +102,9 @@ class StrategyCandlPredict(bt.Strategy):
             # print('currentPrice: ', self.dataclose[0], 'nextPrice: ', nextPrice)
 
             # BUY, BUY, BUY!!! (with default parameters)
+
             # self.log('BUY CREATE, %.2f' % self.dataclose[0]*0.99)
+
 
             # Keep track of the created order to avoid a 2nd order
             #valid=datetime.datetime.now() + datetime.timedelta(days=3))

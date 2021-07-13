@@ -8,20 +8,20 @@ from matplotlib import pyplot as plt
 # ======================input======================
 from mpmath import mpf
 
-# today = date.today()
-# print("Today's date:", today)
-# endDate = date(2021, 7, 2)
-# startDate = date(2021, 6, 20)
-# interval = "15m"
-# ticker = 'MSFT'
+today = date.today()
+print("Today's date:", today)
+endDate = date(2021, 7, 12)
+startDate = date(2021, 6, 20)
+interval = "15m"
+ticker = 'MSFT'
 # ======================get price data======================
-# print('============', endDate-startDate)
+# import yfinance as yf
+# price = yf.download('SPY', start=startDate, end=endDate, interval=interval, auto_adjust=True)
 
-
-from GetData import GetData
-MSF = GetData()
-MSF.plotCandleStick()
-MSF.writePric()
+# from GetData import GetData
+# MSF = GetData()
+# MSF.plotCandleStick()
+# MSF.writePric()
 #
 #
 # from PreProcessing import PreProcessing
