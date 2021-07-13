@@ -96,10 +96,10 @@ class StrategyCandlPredict(bt.Strategy):
         nStock = int(self.broker.getvalue()/buyPrice)
 
         self.order = self.buy(exectype=bt.Order.Limit,price=buyPrice, size=nStock)
-        print(self.barCount, " ======================buy at: ", buyPrice)
+        # print(self.barCount, " ======================buy at: ", buyPrice)
 
         self.order = self.sell(exectype=bt.Order.Limit, price=selPrice, size=nStock)
-        print(self.barCount, "----------------------------------sell at: ", selPrice)
+        # print(self.barCount, "----------------------------------sell at: ", selPrice)
 
 
     # def next(self):
