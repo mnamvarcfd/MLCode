@@ -4,7 +4,7 @@ from GetData import GetData
 from model_LSTM import model_LSTM
 
 
-class StrategyKnownCandl(bt.Strategy):
+class StrategyPredictCandl(bt.Strategy):
 
     params = (('sizer', None),)
 
@@ -37,7 +37,7 @@ class StrategyKnownCandl(bt.Strategy):
         tikerData = GetData()
         preProcessing = PreProcessing(tikerData.price)
         dataFrame = preProcessing.creatDataFrame()
-        # self.model = model_LSTM(dataFrame, 0.9)
+        self.model = model_LSTM(dataFrame, 0.9)
         self.startTesting = len(dataFrame)*0.9
 
         self.price = tikerData.price

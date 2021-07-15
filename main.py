@@ -8,31 +8,25 @@ from matplotlib import pyplot as plt
 # ======================input======================
 from mpmath import mpf
 
-today = date.today()
-print("Today's date:", today)
-endDate = date(2021, 7, 12)
-startDate = date(2021, 6, 20)
-interval = "15m"
-ticker = 'MSFT'
-# ======================get price data======================
-# import yfinance as yf
-# price = yf.download('SPY', start=startDate, end=endDate, interval=interval, auto_adjust=True)
 
-# from GetData import GetData
-# MSF = GetData()
+# ======================get price data======================
+
+from GetData import GetData
+MSF = GetData()
 # MSF.plotCandleStick()
 # MSF.writePric()
-#
-#
-# from PreProcessing import PreProcessing
-# preProcessing = PreProcessing(MSF.price)
+
+
+from PreProcessing import PreProcessing
+preProcessing = PreProcessing(MSF.price)
 # dataFrame = preProcessing.creatDataFrame()
 
+dataFrame = preProcessing.creatMultiDataFrame()
 # dataFrame['Close'].plot()
 # plt.show()
 
 
-from model_LSTM import model_LSTM
+# from model_LSTM import model_LSTM
 # model = model_LSTM(dataFrame, 0.7)
 # model.predictNextCand(len(dataFrame)-5)
 # result = model.predictTrend(len(dataFrame)-500, 500)
@@ -41,14 +35,30 @@ from model_LSTM import model_LSTM
 # plt.show()
 
 
+from model_multiInputLSTM import model_multiInputLSTM
+model = model_multiInputLSTM(dataFrame, 0.7)
+model.predictNextCand(len(dataFrame)-2)
+
+print("open: ", dataFrame['Open'][len(dataFrame)-2])
+print("clos: ", dataFrame['Close'][len(dataFrame)-2])
+print("high: ", dataFrame['High'][len(dataFrame)-2])
+print(" low: ", dataFrame['Low'][len(dataFrame)-2])
+
+MSF.plotCandleStick()
+
+# result = model.predictTrend(len(dataFrame)-50, 50)
+# result = np.array(result)
+# plt.plot(result)
+# plt.show()
+
 
 
 
 # print(len(dataset))
 
-from BackTesting import BackTesting
-backTesting = BackTesting()
-backTesting.run()
+# from BackTesting import BackTesting
+# backTesting = BackTesting()
+# backTesting.run()
 
 
 # closing_price = model.evaluate()

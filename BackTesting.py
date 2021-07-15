@@ -6,7 +6,7 @@ from GetData import GetData
 
 # from MLstrategy import MLstrategy as st
 # from SimpleStrategy import SimpleStrategy as st
-from StrategyKnownCandl import StrategyCandlPredict as st
+from StrategyKnownCandl import StrategyKnownCandl as st
 
 
 

@@ -22,7 +22,7 @@ class GetData:
     def __init__(self):
         self.pricSourc = 'yahoo'
         self.ticker = 'SPY'
-        self.startDate = date(2021, 7, 5)
+        self.startDate = date(2021, 7, 9)
         self.endDate = date(2021, 7, 12)
         self.interval = "1m"
 
