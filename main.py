@@ -37,12 +37,12 @@ dataFrame = preProcessing.creatMultiDataFrame()
 
 from model_multiInputLSTM import model_multiInputLSTM
 model = model_multiInputLSTM(dataFrame, 0.7)
-model.predictNextCand(len(dataFrame)-2)
+model.predictNextCand(len(dataFrame)-10)
 
-print("open: ", dataFrame['Open'][len(dataFrame)-2])
-print("clos: ", dataFrame['Close'][len(dataFrame)-2])
-print("high: ", dataFrame['High'][len(dataFrame)-2])
-print(" low: ", dataFrame['Low'][len(dataFrame)-2])
+print("open: ", dataFrame['Open'][len(dataFrame)-10])
+print("clos: ", dataFrame['Close'][len(dataFrame)-10])
+print("high: ", dataFrame['High'][len(dataFrame)-10])
+print(" low: ", dataFrame['Low'][len(dataFrame)-10])
 
 MSF.plotCandleStick()
 

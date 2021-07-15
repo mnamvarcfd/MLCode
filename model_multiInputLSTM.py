@@ -11,7 +11,7 @@ class model_multiInputLSTM:
 
     def __init__(self, dataFrame, trainPortion):
         self.window = 60
-        self.nFutur = 5
+        self.nFutur = 10
 
         self.trainLengt = int(len(dataFrame) * trainPortion)
         self.testLengt = int(len(dataFrame) - self.trainLengt)
@@ -21,8 +21,8 @@ class model_multiInputLSTM:
 
         # converting dataset into x_train and y_train
         self.scaler = MinMaxScaler(feature_range=(0, 1))
-        dataFrame = self.scaler.fit_transform(dataFrame)
-        self.dataSet = dataFrame
+        self.dataSet = self.scaler.fit_transform(dataFrame)
+
 
         self.trainInputData = None
         self.trainOutputData = None
@@ -37,25 +37,26 @@ class model_multiInputLSTM:
 
         self.creatTrainData(3)
         self.modelLow = self.creat()
+        self.lowScaler = MinMaxScaler(feature_range=(0, 1))
+        dataFrame1 = self.lowScaler.fit_transform(dataFrame[:,3].reshape(-1, 1))
 
         self.creatTestData()
 
     # creating train
     def creatTrainData(self, itemPredict):
-        data = self.dataSet[0:self.trainLengt, :]
 
         trainInput = []
         trainOutput = []
-        for i in range(self.window, len(data)):
-            trainInput.append(data[i - self.window:i, :])
-            trainOutput.append(data[i:i+self.nFutur, itemPredict])
+        for i in range(0, self.trainLengt - self.window):
+            trainOutput.append(self.dataSet[i + self.window : i + self.window + self.nFutur, itemPredict])
+            trainInput.append(self.dataSet[i:i + self.window, :])
 
         trainInputData = np.array(trainInput)
         trainOutputData = np.array(trainOutput)
 
         self.trainInputData = np.reshape(trainInputData, (trainInputData.shape[0], trainInputData.shape[1], trainInputData.shape[2]))
         self.trainOutputData = np.reshape(trainOutputData, (trainOutputData.shape[0], trainOutputData.shape[1]))
-        print("---------")
+        # print("---------")
 
 
     # creating test sets
@@ -79,10 +80,10 @@ class model_multiInputLSTM:
         model = Sequential()
         model.add(LSTM(units=50, return_sequences=True, input_shape=(self.trainInputData.shape[1], self.trainInputData.shape[2])))
         model.add(LSTM(units=50))
-        model.add(Dense(1))
+        model.add(Dense(self.nFutur))
 
         model.compile(loss='mean_squared_error', optimizer='adam')
-        model.fit(self.trainInputData, self.trainOutputData, epochs=1, batch_size=1, verbose=1)
+        model.fit(self.trainInputData, self.trainOutputData, epochs=60, batch_size=50, verbose=1)
 
         return model
 
@@ -110,13 +111,12 @@ class model_multiInputLSTM:
 
         # print("data value: ", data)
         low = self.modelLow.predict(data)
-        # low = [low, low, low, low, low]
-        # low = np.reshape(low, (1, 5))
-        #
-        # predictedLow = self.scaler.inverse_transform(low)
-        print("predicted Low value: ", low)
 
-        # return predictedLow
+
+        predictedLow = self.lowScaler.inverse_transform(low)
+        print("predicted Low value: ", predictedLow)
+
+        return predictedLow
 
 
 
