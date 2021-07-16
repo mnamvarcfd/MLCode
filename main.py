@@ -61,9 +61,9 @@ dataFrame = preProcessing.creatMultiDataFrame()
 
 # row = [stock.price['Close'][1], stock.price['Close'][1], stock.price['Close'][1], stock.price['Close'][1], stock.price['Close'][1] ]
 
-row = [ 10000,10000,10000,10000,10000 ]
-
-result = stock.price['Low'].copy()
+# row = [ 10000,10000,10000,10000,10000 ]
+#
+# result = stock.price['Low'].copy()
 
 
 
@@ -86,27 +86,28 @@ result = stock.price['Low'].copy()
 # import mplfinance as mpf
 # apdict = mpf.make_addplot(result)
 # mpf.plot(stock.price, title=stock.ticker, type='candle', addplot=apdict)
-predicted = [455 , 455 , 456 , 455 , 455]
+predicted = [435 , 435 , 436 , 435 , 435]
 
-
-nFutur = 5
-lendData = len(stock.price)
-import pandas as pd
-for i in range(0, nFutur):
-    idx = stock.price.tail(1).index[0] + pd.Timedelta(minutes=1)
-    stock.price.loc[idx] = stock.price['Low'][-1].copy()
-
-additionalData = stock.price['Low'].copy()
-
-# result.index.name = 'Date'
-for i in range(0, nFutur):
-    additionalData[lendData + i] = predicted[i]
+#
+# nFutur = 5
+# lendData = len(stock.price)
+# import pandas as pd
+# for i in range(0, nFutur):
+#     idx = stock.price.tail(1).index[0] + pd.Timedelta(minutes=1)
+#     stock.price.loc[idx] = stock.price['Low'][-1].copy()
+#
+# additionalData = stock.price['Low'].copy()
+#
+# # result.index.name = 'Date'
+# for i in range(0, nFutur):
+#     additionalData[lendData + i] = predicted[i]
 
 
 from VisulizeData import VisulizeData
 visual = VisulizeData(stock.ticker, stock.price)
 # visual.plotCandleStick()
-visual.plotCandlePlus(additionalData) #,[] 'Open'
+# visual.plotCandlePlus(predicted)
+visual.plotCandlePredictData(predicted)
 
 # print(len(dataset))
 

@@ -1,21 +1,11 @@
 import mplfinance as mpf
+import pandas as pd
 
 class VisulizeData:
-
-    # def __init__(self, tikerData):
-    #     self.tikerData = tikerData
-    #     self.pricData = tikerData.price
-    #
-    # def __init__(self, tikerData, dataSet):
-    #     self.tikerData = tikerData
-    #     self.pricData = tikerData.price
-    #     self.dataSet = dataSet
 
     def __init__(self, tiker, dataSet):
         self.tiker = tiker
         self.dataSet = dataSet
-
-
 
 
     def plotCandleStick(self):
@@ -23,7 +13,35 @@ class VisulizeData:
         mpf.plot(self.dataSet, title=self.tiker, type='candle')
 
 
-    def plotCandlePlus(self, additionalData):
+    def plotCandlePlus(self, predicted):
+
+        nFutur = len(predicted)
+        lendData = len(self.dataSet)
+        additionalData = self.dataSet['Close'].copy()
+
+        for i in range(0, nFutur):
+            additionalData[lendData - nFutur + i] = predicted[i]
+
+        apdict = mpf.make_addplot(additionalData)
+        mpf.plot(self.dataSet, title=self.tiker, type='candle', addplot=apdict)
+
+
+
+
+    def plotCandlePredictData(self, predicted):
+
+        nFutur = len(predicted)
+        lendData = len(self.dataSet)
+        for i in range(0, nFutur):
+            idx = self.dataSet.tail(1).index[0] + pd.Timedelta(minutes=1)
+            self.dataSet.loc[idx] = self.dataSet['Close'][-1].copy()
+
+        additionalData = self.dataSet['Close'].copy()
+
+        # result.index.name = 'Date'
+        for i in range(0, nFutur):
+            additionalData[lendData + i] = predicted[i]
+
         apdict = mpf.make_addplot(additionalData)
         mpf.plot(self.dataSet, title=self.tiker, type='candle', addplot=apdict)
 
