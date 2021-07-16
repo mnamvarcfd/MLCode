@@ -10,7 +10,7 @@ from sklearn.preprocessing import MinMaxScaler
 class model_multiInputLSTM:
 
     def __init__(self, dataFrame, trainPortion):
-        self.window = 60
+        self.window = 100
         self.nFutur = 10
 
         self.trainLengt = int(len(dataFrame) * trainPortion)
@@ -32,13 +32,10 @@ class model_multiInputLSTM:
         self.modelHigh = None
         self.testResult = None
 
-        # self.creatTrainData(2)
-        # self.modelHigh = self.creat()
-
         self.creatTrainData(3)
         self.modelLow = self.creat()
         self.lowScaler = MinMaxScaler(feature_range=(0, 1))
-        dataFrame1 = self.lowScaler.fit_transform(dataFrame[:,3].reshape(-1, 1))
+        self.lowScaler.fit_transform(dataFrame[:,3].reshape(-1, 1))
 
         self.creatTestData()
 
@@ -56,7 +53,7 @@ class model_multiInputLSTM:
 
         self.trainInputData = np.reshape(trainInputData, (trainInputData.shape[0], trainInputData.shape[1], trainInputData.shape[2]))
         self.trainOutputData = np.reshape(trainOutputData, (trainOutputData.shape[0], trainOutputData.shape[1]))
-        # print("---------")
+
 
 
     # creating test sets
@@ -83,7 +80,7 @@ class model_multiInputLSTM:
         model.add(Dense(self.nFutur))
 
         model.compile(loss='mean_squared_error', optimizer='adam')
-        model.fit(self.trainInputData, self.trainOutputData, epochs=60, batch_size=50, verbose=1)
+        model.fit(self.trainInputData, self.trainOutputData, epochs=50, batch_size=1, verbose=1)
 
         return model
 
@@ -109,12 +106,10 @@ class model_multiInputLSTM:
         data = np.array(data)
         data = np.reshape(data, (1, data.shape[1], data.shape[2]))
 
-        # print("data value: ", data)
         low = self.modelLow.predict(data)
 
 
         predictedLow = self.lowScaler.inverse_transform(low)
-        print("predicted Low value: ", predictedLow)
 
         return predictedLow
 
