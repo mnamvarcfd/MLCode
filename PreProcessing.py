@@ -1,7 +1,5 @@
 import pandas as pd
 
-
-
 class PreProcessing:
 
     def __init__(self, price):
@@ -19,8 +17,8 @@ class PreProcessing:
         data = self.pricData.sort_index(ascending=True, axis=0)
         self.dataFrame = pd.DataFrame(index=range(0, len(self.pricData)), columns=['Close'])
         for i in range(0, len(data)):
-            # self.dataFrame['Date'][i] = data['Date'][i]
             self.dataFrame['Close'][i] = data['Close'][i]
+            # self.dataFrame['Date'][i] = data['Date'][i]
 
         return self.dataFrame
 

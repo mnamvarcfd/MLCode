@@ -22,7 +22,6 @@ class StrategyKnownCandl(bt.Strategy):
 
 
         # Keep a reference to the "close" line in the data[0] dataseries
-
         self.dataClose = self.datas[0].close
         self.dataOpen = self.datas[0].open
         self.dateTime = self.datas[0].datetime
@@ -96,10 +95,8 @@ class StrategyKnownCandl(bt.Strategy):
         nStock = int(self.broker.getvalue()/buyPrice)
 
         self.order = self.buy(exectype=bt.Order.Limit,price=buyPrice, size=nStock)
-        # print(self.barCount, " ======================buy at: ", buyPrice)
 
         self.order = self.sell(exectype=bt.Order.Limit, price=selPrice, size=nStock)
-        # print(self.barCount, "----------------------------------sell at: ", selPrice)
 
 
     # def next(self):

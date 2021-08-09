@@ -1,4 +1,3 @@
-from pandas_datareader.data import DataReader
 import yfinance as yf
 import mplfinance as mpf
 from datetime import date
@@ -7,12 +6,12 @@ from datetime import date
 class GetData:
 
     def __init__(self, ticker, startDate, endDate, interval):
-        self.pricSourc = 'yahoo'
         self.ticker = ticker
         self.startDate = startDate
         self.endDate = endDate
         self.interval = interval
 
+        # self.pricSourc = 'yahoo'
         # self.price = DataReader(self.ticker, self.pricSourc, self.startDate, self.endDate)
         self.price = yf.download(ticker, start=startDate, end=endDate, interval=interval, auto_adjust=True)
 
@@ -20,12 +19,13 @@ class GetData:
 
 
     def __init__(self):
-        self.pricSourc = 'yahoo'
         self.ticker = 'SPY'
-        self.startDate = date(2021, 7, 9)
+        self.startDate = date(2021, 7, 7)
         self.endDate = date(2021, 7, 12)
         self.interval = "1m"
 
+        # from pandas_datareader import DataReader
+        # self.pricSourc = 'yahoo'
         # self.price = DataReader(self.ticker, self.pricSourc, self.startDate, self.endDate)
         self.price = yf.download(self.ticker, start=self.startDate, end=self.endDate, interval=self.interval, auto_adjust=True)
 

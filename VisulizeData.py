@@ -15,12 +15,12 @@ class VisulizeData:
 
     def plotCandlePlus(self, predicted):
 
-        nFutur = len(predicted)
+        nFutur = predicted.size
         lendData = len(self.dataSet)
-        additionalData = self.dataSet['Close'].copy()
+        additionalData = self.dataSet['Low'].copy()
 
         for i in range(0, nFutur):
-            additionalData[lendData - nFutur + i] = predicted[i]
+            additionalData[lendData - nFutur + i] = predicted[0,i]
 
         apdict = mpf.make_addplot(additionalData)
         mpf.plot(self.dataSet, title=self.tiker, type='candle', addplot=apdict)
@@ -31,16 +31,16 @@ class VisulizeData:
     def plotCandlePredictData(self, predicted):
 
         nFutur = len(predicted)
-        lendData = len(self.dataSet)
+        lenData = len(self.dataSet)
         for i in range(0, nFutur):
             idx = self.dataSet.tail(1).index[0] + pd.Timedelta(minutes=1)
-            self.dataSet.loc[idx] = self.dataSet['Close'][-1].copy()
+            self.dataSet.loc[idx] = self.dataSet['Low'][-1].copy()
 
-        additionalData = self.dataSet['Close'].copy()
+        additionalData = self.dataSet['Low'].copy()
 
         # result.index.name = 'Date'
         for i in range(0, nFutur):
-            additionalData[lendData + i] = predicted[i]
+            additionalData[lenData + i] = predicted[0,i]
 
         apdict = mpf.make_addplot(additionalData)
         mpf.plot(self.dataSet, title=self.tiker, type='candle', addplot=apdict)

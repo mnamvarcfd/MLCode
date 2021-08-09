@@ -6,7 +6,6 @@ from keras.models import Sequential
 from sklearn.preprocessing import MinMaxScaler
 
 
-
 class model_multiInputLSTM:
 
     def __init__(self, dataFrame, trainPortion):
@@ -45,8 +44,8 @@ class model_multiInputLSTM:
         trainInput = []
         trainOutput = []
         for i in range(0, self.trainLengt - self.window):
-            trainOutput.append(self.dataSet[i + self.window : i + self.window + self.nFutur, itemPredict])
             trainInput.append(self.dataSet[i:i + self.window, :])
+            trainOutput.append(self.dataSet[i + self.window : i + self.window + self.nFutur, itemPredict])
 
         trainInputData = np.array(trainInput)
         trainOutputData = np.array(trainOutput)
@@ -80,7 +79,7 @@ class model_multiInputLSTM:
         model.add(Dense(self.nFutur))
 
         model.compile(loss='mean_squared_error', optimizer='adam')
-        model.fit(self.trainInputData, self.trainOutputData, epochs=50, batch_size=1, verbose=1)
+        model.fit(self.trainInputData, self.trainOutputData, epochs=1, batch_size=1, verbose=1)
 
         return model
 
